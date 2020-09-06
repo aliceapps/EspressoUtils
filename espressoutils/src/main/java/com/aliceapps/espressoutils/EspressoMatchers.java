@@ -8,18 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
 import com.google.android.material.textfield.TextInputLayout;
-
 import org.hamcrest.Matcher;
-import org.jetbrains.annotations.Contract;
 import org.hamcrest.Description;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EspressoMatchers {
     @NonNull
-    @Contract(value = "_ -> new", pure = true)
     public static Matcher<View> hasErrorText(final String expectedErrorText) {
         return new BoundedMatcher<View, TextInputLayout>(TextInputLayout.class) {
             @Override
@@ -41,7 +37,6 @@ public class EspressoMatchers {
     }
 
     @NonNull
-    @Contract(value = " -> new", pure = true)
     public static Matcher<View> noErrorText() {
         return new BoundedMatcher<View, TextInputLayout>(TextInputLayout.class) {
             @Override
@@ -58,8 +53,7 @@ public class EspressoMatchers {
     }
 
     @SuppressWarnings("rawtypes")
-    @NotNull
-    @Contract(value = "_ -> new", pure = true)
+    @NonNull
     public static Matcher<View> autocompleteContainsValues(final String expectedText) {
         return new BoundedMatcher<View, AutoCompleteTextView>(AutoCompleteTextView.class) {
 

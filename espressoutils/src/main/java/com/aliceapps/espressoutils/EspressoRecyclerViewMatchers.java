@@ -7,20 +7,18 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 public class EspressoRecyclerViewMatchers {
-    @NotNull
-    @Contract(value = "_ -> new", pure = true)
+
+    @NonNull
     public static Matcher<View> recycleViewHasItems(final int size) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
@@ -30,7 +28,7 @@ public class EspressoRecyclerViewMatchers {
             }
 
             @Override
-            protected boolean matchesSafely(@NotNull RecyclerView item) {
+            protected boolean matchesSafely(@NonNull RecyclerView item) {
                 if (item.getAdapter() == null)
                     return false;
                 else {
@@ -42,7 +40,6 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    @Contract(value = "_, _ -> new", pure = true)
     public static Matcher<? super View> itemAtPositionChecked(final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
@@ -73,7 +70,6 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    @Contract(value = "_, _, _ -> new", pure = true)
     public static Matcher<? super View> itemAtPositionFilled(final String checkText, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
@@ -97,7 +93,6 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    @Contract(value = "_, _, _ -> new", pure = true)
     public static Matcher<? super View> itemAtPositionImage(final int imageId, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 

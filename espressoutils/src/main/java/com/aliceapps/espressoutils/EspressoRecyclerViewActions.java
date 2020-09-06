@@ -10,8 +10,6 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 
 import org.hamcrest.Matcher;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -20,8 +18,7 @@ import static org.hamcrest.Matchers.allOf;
 
 public class EspressoRecyclerViewActions {
 
-    @NotNull
-    @Contract(value = "_ -> new", pure = true)
+    @NonNull
     public static ViewAction clickOnChildViewWithId(final int id) {
         return new ViewAction() {
 
@@ -43,8 +40,7 @@ public class EspressoRecyclerViewActions {
         };
     }
 
-    @NotNull
-    @Contract(value = "_, _ -> new", pure = true)
+    @NonNull
     public static ViewAction replaceTextOnChildView(final int id, final String s) {
         return new ViewAction() {
 
@@ -67,7 +63,6 @@ public class EspressoRecyclerViewActions {
     }
 
     @NonNull
-    @Contract(value = "_, _ -> new", pure = true)
     public static ViewAction waitRecyclerView(final int itemCount, final long millis) {
         return new ViewAction() {
 

@@ -8,10 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.test.platform.app.InstrumentationRegistry;
-
-import org.jetbrains.annotations.Nullable;
 
 public class TestUtil {
     @NonNull

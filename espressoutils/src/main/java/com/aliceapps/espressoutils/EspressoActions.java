@@ -5,14 +5,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 
 import org.hamcrest.Matcher;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
 
 import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -22,7 +20,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @SuppressWarnings("rawtypes")
 public class EspressoActions {
-    public static ViewAction replaceAutocomplete(@Nonnull String stringToBeSet) {
+    public static ViewAction replaceAutocomplete(@NonNull String stringToBeSet) {
         return actionWithAssertions(new ReplaceAutocompleteTextAction(stringToBeSet));
     }
 
@@ -58,8 +56,7 @@ public class EspressoActions {
     }
 
     //Click on view - same as click(), but doesn't check constraints
-    @NotNull
-    @org.jetbrains.annotations.Contract(value = " -> new", pure = true)
+    @NonNull
     public static ViewAction clickOnView() {
         return new ViewAction() {
 
