@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.test.espresso.UiController;
@@ -24,7 +25,7 @@ public class EspressoActions {
         return actionWithAssertions(new ReplaceAutocompleteTextAction(stringToBeSet));
     }
 
-    public static class ReplaceAutocompleteTextAction implements ViewAction {
+    private static class ReplaceAutocompleteTextAction implements ViewAction {
         private final String stringToBeSet;
 
         ReplaceAutocompleteTextAction(String value) {
@@ -55,25 +56,22 @@ public class EspressoActions {
         }
     }
 
-    //Click on view - same as click(), but doesn't check constraints
-    @NonNull
-    public static ViewAction clickOnView() {
+    public static ViewAction setProgress(final int progress) {
         return new ViewAction() {
-
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isEnabled(); // no constraints, they are checked above
-            }
-
-            @Override
-            public String getDescription() {
-                return "Click on view";
-            }
-
             @Override
             public void perform(UiController uiController, View view) {
-                view.performClick();
+                SeekBar seekBar = (SeekBar) view;
+                seekBar.setProgress(progress);
+            }
+            @Override
+            public String getDescription() {
+                return "Set a progress on a SeekBar";
+            }
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(SeekBar.class);
             }
         };
     }
+
 }

@@ -1,9 +1,12 @@
 package com.aliceapps.espressoutils;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +22,7 @@ import java.util.Objects;
 public class EspressoRecyclerViewMatchers {
 
     @NonNull
-    public static Matcher<View> recycleViewHasItems(final int size) {
+    public static Matcher<View> recycleViewSize(final int size) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -70,7 +73,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> itemAtPositionFilled(final String checkText, final int position, final int viewId) {
+    public static Matcher<? super View> itemAtPositionHasData(final String checkText, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -82,9 +85,9 @@ public class EspressoRecyclerViewMatchers {
             @Override
             protected boolean matchesSafely(RecyclerView item) {
                 TextView check = (TextView) getItemViewElement(viewId, position, item);
-                if (check == null)
+                if (check == null) {
                     return false;
-                else {
+                } else {
                     String found = check.getText().toString();
                     return found.equals(checkText);
                 }
@@ -93,27 +96,67 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> itemAtPositionImage(final int imageId, final int position, final int viewId) {
+    public static Matcher<? super View> itemAtPositionHasTag(final String tag, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
             public void describeTo(Description description) {
                 description.appendText("Checking recycler view item is has correct image. Item position: " + position);
-                description.appendText("Item image id: " + imageId);
+                description.appendText("Item image tag: " + tag);
             }
 
             @Override
             protected boolean matchesSafely(RecyclerView item) {
-                View check = getItemViewElement(viewId, position, item);
-                if (check == null)
+                View imageView = getItemViewElement(viewId, position, item);
+                if (imageView == null || imageView.getTag() == null)
                     return false;
                 else {
-                    Bitmap image = TestUtil.getBitmapDrawableFromID(imageId).getBitmap();
-                    Bitmap finalImage = TestUtil.getBitmapDrawableFromVector((VectorDrawable) check.getBackground());
-                    return image.sameAs(finalImage);
+                    return imageView.getTag().equals(tag);
                 }
             }
         };
+    }
+
+    @NonNull
+    public static Matcher<? super View> itemAtPositionImage(final int expectedImage, final int position, final int viewId) {
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Checking recycler view item is has correct image. Item position: " + position);
+                description.appendText("Item image id: " + expectedImage);
+            }
+
+            @Override
+            protected boolean matchesSafely(RecyclerView item) {
+                View imageView = getItemViewElement(viewId, position, item);
+                if (!(imageView instanceof TextView) && !(imageView instanceof ImageView)) {
+                    return false;
+                } else {
+                    boolean found = false;
+                    if (imageView instanceof TextView) {
+                        TextView textView = (TextView) imageView;
+                        Drawable[] drawables = textView.getCompoundDrawables();
+
+                        for (Drawable drawable : drawables) {
+                            if (!found && drawable != null)
+                                found = compareDrawableToResource(drawable, expectedImage, imageView);
+                        }
+                    } else {
+                        found = compareDrawableToResource(imageView.getBackground(), expectedImage, imageView);
+                    }
+                    return found;
+                }
+            }
+        };
+    }
+
+    private static boolean compareDrawableToResource(Drawable drawable, int expectedId, @NonNull View view) {
+        if (drawable == null || expectedId == 0)
+            return false;
+        Bitmap expectedImage = TestUtil.getBitmapFromVectorID(view.getContext(), expectedId);
+        Bitmap actualImage = TestUtil.getBitmapFromVectorDrawable(drawable);
+        return expectedImage != null && actualImage.sameAs(expectedImage);
     }
 
     @NonNull
