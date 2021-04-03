@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
+import com.google.android.material.chip.Chip;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
@@ -118,6 +120,28 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
+    public static Matcher<? super View> chipAtPositionVisible(final int position, final int viewId) {
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Checking recycler view item is has correct image. Item position: " + position);
+            }
+
+            @Override
+            protected boolean matchesSafely(RecyclerView item) {
+                View imageView = getItemViewElement(viewId, position, item);
+                if (!(imageView instanceof Chip)) {
+                    return false;
+                } else {
+                    Chip chip = (Chip) imageView;
+                    return chip.getVisibility() == View.VISIBLE;
+                }
+            }
+        };
+    }
+
+    @NonNull
     public static Matcher<? super View> itemAtPositionImage(final int expectedImage, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
@@ -175,6 +199,27 @@ public class EspressoRecyclerViewMatchers {
                 else {
                     View check = Objects.requireNonNull(item.findViewHolderForAdapterPosition(position)).itemView;
                     return check.getVisibility() == View.GONE;
+                }
+            }
+        };
+    }
+
+    @NonNull
+    public static Matcher<? super View> childItemAtPositionVisible(final int position, final int viewId) {
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Checking recycler view item is has correct image. Item position: " + position);
+            }
+
+            @Override
+            protected boolean matchesSafely(RecyclerView item) {
+                View imageView = getItemViewElement(viewId, position, item);
+                if (imageView == null) {
+                    return false;
+                } else {
+                    return imageView.getVisibility() == View.VISIBLE;
                 }
             }
         };
