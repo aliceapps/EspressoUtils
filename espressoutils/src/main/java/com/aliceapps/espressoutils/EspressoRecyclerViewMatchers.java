@@ -45,7 +45,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> itemAtPositionChecked(final int position, final int viewId) {
+    public static Matcher<? super View> checkedTextViewChecked(final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -75,7 +75,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> itemAtPositionHasData(final String checkText, final int position, final int viewId) {
+    public static Matcher<? super View> textViewHasData(final String checkText, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -98,7 +98,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> itemAtPositionHasTag(final String tag, final int position, final int viewId) {
+    public static Matcher<? super View> viewHasTag(final String tag, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -120,7 +120,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> chipAtPositionVisible(final int position, final int viewId) {
+    public static Matcher<? super View> chipVisible(final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -142,7 +142,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> itemAtPositionImage(final int expectedImage, final int position, final int viewId) {
+    public static Matcher<? super View> imageViewHasBackground(final int expectedImage, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -154,11 +154,32 @@ public class EspressoRecyclerViewMatchers {
             @Override
             protected boolean matchesSafely(RecyclerView item) {
                 View imageView = getItemViewElement(viewId, position, item);
-                if (!(imageView instanceof TextView) && !(imageView instanceof ImageView)) {
+                if (! (imageView instanceof ImageView)) {
+                    return false;
+                } else {
+                    return compareDrawableToResource(imageView.getBackground(), expectedImage, imageView);
+                }
+            }
+        };
+    }
+
+    @NonNull
+    public static Matcher<? super View> textViewHasCompoundDrawable(final int expectedImage, final int position, final int viewId) {
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Checking recycler view item is has correct image. Item position: " + position);
+                description.appendText("Item image id: " + expectedImage);
+            }
+
+            @Override
+            protected boolean matchesSafely(RecyclerView item) {
+                View imageView = getItemViewElement(viewId, position, item);
+                if (!(imageView instanceof TextView)) {
                     return false;
                 } else {
                     boolean found = false;
-                    if (imageView instanceof TextView) {
                         TextView textView = (TextView) imageView;
                         Drawable[] drawables = textView.getCompoundDrawables();
 
@@ -166,9 +187,6 @@ public class EspressoRecyclerViewMatchers {
                             if (!found && drawable != null)
                                 found = compareDrawableToResource(drawable, expectedImage, imageView);
                         }
-                    } else {
-                        found = compareDrawableToResource(imageView.getBackground(), expectedImage, imageView);
-                    }
                     return found;
                 }
             }
@@ -178,8 +196,8 @@ public class EspressoRecyclerViewMatchers {
     private static boolean compareDrawableToResource(Drawable drawable, int expectedId, @NonNull View view) {
         if (drawable == null || expectedId == 0)
             return false;
-        Bitmap expectedImage = TestUtil.getBitmapFromVectorID(view.getContext(), expectedId);
-        Bitmap actualImage = TestUtil.getBitmapFromVectorDrawable(drawable);
+        Bitmap expectedImage = TestUtil.getBitmapFromVectorID(view.getContext(), expectedId, view);
+        Bitmap actualImage = TestUtil.getBitmapFromVectorDrawable(drawable, view.getWidth(), view.getHeight());
         return expectedImage != null && actualImage.sameAs(expectedImage);
     }
 

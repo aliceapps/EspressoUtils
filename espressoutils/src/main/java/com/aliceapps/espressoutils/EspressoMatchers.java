@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -121,9 +123,27 @@ public class EspressoMatchers {
 
             @Override
             protected boolean matchesSafely(View item) {
-                Bitmap expected = TestUtil.getBitmapFromVectorID(item.getContext(), imageID);
-                Bitmap actual = TestUtil.getBitmapFromVectorDrawable(item.getBackground());
+                Bitmap expected = TestUtil.getBitmapFromVectorID(item.getContext(), imageID, item);
+                Bitmap actual = TestUtil.getBitmapFromVectorDrawable(item.getBackground(), item.getWidth(), item.getHeight());
                 return expected != null && actual != null && expected.sameAs(actual);
+            }
+        };
+    }
+
+    @NonNull
+    public static Matcher<? super View> hasTextColor(final int color) {
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Checking view is has correct text color.");
+                description.appendText("Color id: " + color);
+            }
+
+            @Override
+            protected boolean matchesSafely(TextView imageView) {
+                int currentColor = imageView.getCurrentTextColor();
+                return  currentColor == ContextCompat.getColor(imageView.getContext(),color);
             }
         };
     }
