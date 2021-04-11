@@ -142,7 +142,7 @@ public class EspressoRecyclerViewMatchers {
     }
 
     @NonNull
-    public static Matcher<? super View> imageViewHasBackground(final int expectedImage, final int position, final int viewId) {
+    public static Matcher<? super View> viewHasBackground(final int expectedImage, final int position, final int viewId) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
 
             @Override
@@ -154,11 +154,7 @@ public class EspressoRecyclerViewMatchers {
             @Override
             protected boolean matchesSafely(RecyclerView item) {
                 View imageView = getItemViewElement(viewId, position, item);
-                if (! (imageView instanceof ImageView)) {
-                    return false;
-                } else {
-                    return compareDrawableToResource(imageView.getBackground(), expectedImage, imageView);
-                }
+                return compareDrawableToResource(imageView.getBackground(), expectedImage, imageView);
             }
         };
     }
