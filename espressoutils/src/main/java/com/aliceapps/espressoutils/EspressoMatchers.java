@@ -123,8 +123,8 @@ public class EspressoMatchers {
 
             @Override
             protected boolean matchesSafely(View item) {
-                Bitmap expected = TestUtil.getBitmapFromVectorID(item.getContext(), imageID, item);
-                Bitmap actual = TestUtil.getBitmapFromVectorDrawable(item.getBackground(), item.getWidth(), item.getHeight());
+                Bitmap expected = TestUtil.getBitmapFromVectorID(item.getContext(), imageID);
+                Bitmap actual = TestUtil.getBitmapFromVectorDrawable(item.getBackground());
                 return expected != null && actual != null && expected.sameAs(actual);
             }
         };
