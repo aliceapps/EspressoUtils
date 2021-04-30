@@ -192,9 +192,19 @@ public class EspressoRecyclerViewMatchers {
     private static boolean compareDrawableToResource(Drawable drawable, int expectedId, @NonNull View view) {
         if (drawable == null || expectedId == 0)
             return false;
-        Bitmap expectedImage = TestUtil.getBitmapFromVectorID(view.getContext(), expectedId);
-        Bitmap actualImage = TestUtil.getBitmapFromVectorDrawable(drawable);
-        return expectedImage != null && actualImage.sameAs(expectedImage);
+        Bitmap expectedImage = TestUtil.getBitmapFromVectorID(view.getContext(), expectedId, view);
+        boolean same = false;
+        if (drawable.getIntrinsicHeight() > 0 && drawable.getIntrinsicWidth() > 0) {
+            Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
+                    drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+            same = expectedImage != null && actual != null && expectedImage.sameAs(actual);
+        }
+        if (!same) {
+            Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
+                    view.getWidth(), view.getHeight());
+            same = expectedImage != null && actual != null && expectedImage.sameAs(actual);
+        }
+        return same;
     }
 
     @NonNull

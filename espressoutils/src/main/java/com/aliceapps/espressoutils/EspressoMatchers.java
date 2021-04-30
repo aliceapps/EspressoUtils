@@ -1,6 +1,7 @@
 package com.aliceapps.espressoutils;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -123,9 +124,20 @@ public class EspressoMatchers {
 
             @Override
             protected boolean matchesSafely(View item) {
-                Bitmap expected = TestUtil.getBitmapFromVectorID(item.getContext(), imageID);
-                Bitmap actual = TestUtil.getBitmapFromVectorDrawable(item.getBackground());
-                return expected != null && actual != null && expected.sameAs(actual);
+                Bitmap expected = TestUtil.getBitmapFromVectorID(item.getContext(), imageID, item);
+                Drawable drawable = item.getBackground();
+                boolean same = false;
+                if (drawable.getIntrinsicHeight() > 0 && drawable.getIntrinsicWidth() > 0) {
+                    Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
+                            drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                    same = expected != null && actual != null && expected.sameAs(actual);
+                }
+                if (!same) {
+                    Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
+                            item.getWidth(), item.getHeight());
+                    same = expected != null && actual != null && expected.sameAs(actual);
+                }
+                return same;
             }
         };
     }
