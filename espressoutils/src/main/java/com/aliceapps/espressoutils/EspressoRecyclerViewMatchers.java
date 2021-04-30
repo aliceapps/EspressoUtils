@@ -176,13 +176,13 @@ public class EspressoRecyclerViewMatchers {
                     return false;
                 } else {
                     boolean found = false;
-                        TextView textView = (TextView) imageView;
-                        Drawable[] drawables = textView.getCompoundDrawables();
+                    TextView textView = (TextView) imageView;
+                    Drawable[] drawables = textView.getCompoundDrawables();
 
-                        for (Drawable drawable : drawables) {
-                            if (!found && drawable != null)
-                                found = compareDrawableToResource(drawable, expectedImage, imageView);
-                        }
+                    for (Drawable drawable : drawables) {
+                        if (!found && drawable != null)
+                            found = compareDrawableToResource(drawable, expectedImage, imageView);
+                    }
                     return found;
                 }
             }
@@ -194,14 +194,13 @@ public class EspressoRecyclerViewMatchers {
             return false;
         Bitmap expectedImage = TestUtil.getBitmapFromVectorID(view.getContext(), expectedId, view);
         boolean same = false;
-        if (drawable.getIntrinsicHeight() > 0 && drawable.getIntrinsicWidth() > 0) {
-            Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
+        Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
+                view.getWidth(), view.getHeight());
+        same = expectedImage != null && actual != null && expectedImage.sameAs(actual);
+
+        if (!same && drawable.getIntrinsicHeight() > 0 && drawable.getIntrinsicWidth() > 0) {
+            actual = TestUtil.getBitmapFromVectorDrawable(drawable,
                     drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            same = expectedImage != null && actual != null && expectedImage.sameAs(actual);
-        }
-        if (!same) {
-            Bitmap actual = TestUtil.getBitmapFromVectorDrawable(drawable,
-                    view.getWidth(), view.getHeight());
             same = expectedImage != null && actual != null && expectedImage.sameAs(actual);
         }
         return same;
