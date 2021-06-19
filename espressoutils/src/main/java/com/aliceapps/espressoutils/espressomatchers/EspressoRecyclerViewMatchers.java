@@ -1,4 +1,4 @@
-package com.aliceapps.espressoutils;
+package com.aliceapps.espressoutils.espressomatchers;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
+import com.aliceapps.espressoutils.TestUtil;
 import com.google.android.material.chip.Chip;
 
 import org.hamcrest.Description;

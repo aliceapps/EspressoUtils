@@ -1,4 +1,4 @@
-package com.aliceapps.espressoutils;
+package com.aliceapps.espressoutils.espressomatchers;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
+import com.aliceapps.espressoutils.TestUtil;
 import com.google.android.material.textfield.TextInputLayout;
 import org.hamcrest.Matcher;
 import org.hamcrest.Description;

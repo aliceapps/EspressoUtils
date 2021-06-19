@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat;
 
 public class TestUtil {
     @Nullable
-    static Bitmap getBitmapFromVectorID(Context context, int drawableId, View view) {
+    public static Bitmap getBitmapFromVectorID(Context context, int drawableId, View view) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (drawable != null) {
             if (drawable.getIntrinsicWidth() > 0 && drawable.getIntrinsicHeight() > 0)
@@ -25,7 +25,7 @@ public class TestUtil {
             return null;
     }
 
-    static Bitmap getBitmapFromVectorDrawable(@NonNull Drawable drawable, int width, int height) {
+    public static Bitmap getBitmapFromVectorDrawable(@NonNull Drawable drawable, int width, int height) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());

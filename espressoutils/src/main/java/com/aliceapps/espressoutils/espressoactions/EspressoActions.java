@@ -1,4 +1,4 @@
-package com.aliceapps.espressoutils;
+package com.aliceapps.espressoutils.espressoactions;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
