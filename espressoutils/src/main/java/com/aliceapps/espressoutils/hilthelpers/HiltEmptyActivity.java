@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.aliceapps.espressoutils.R;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 public class HiltEmptyActivity extends AppCompatActivity {
 
     @Override
