@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         minSdk 28
-        targetSdk 30
-        versionCode 16
-        versionName "1.4.6"
+        targetSdk 31
+        versionCode 17
+        versionName "1.4.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
